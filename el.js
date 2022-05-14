@@ -41,15 +41,14 @@ $.hijack = node => {
 	this.att$('clickable', true)
         return this
     }
-    node.map$ = function(handler) {
-        handler(this)
+    node.map$ = function(f) {
+        f(this)
         return this
     }
     node.wrap$ = function(el) {
         this.ch$ = this.ch$.bind(el)
         return this
     }
-    node.return$ = x => x
 }
 
 $.el = tagName => (...children) => {

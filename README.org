@@ -1,0 +1,81 @@
+* README
+
+** What is this?
+
+el.js (and el.css) is a convenience library for vanilla javascript
+projects.  el.js makes working with elements simple and provides a few
+predefines custom elements.
+
+** Usage
+
+Simply include el.js and el.css in your HTML.
+#+begin_src html
+  <head>
+    ...
+    <link rel="stylesheet" href="path/to/el.css"/>
+    <script src="path/to/el.js"></script>
+    ...
+  </head>
+#+end_src
+
+el.js provides a global namespace ~$~, which contains functions for:
+- Creating elements (~$.el(name)(...children)~, ~$.div(...children)~,
+  ~$.dialog(controls, ...children)~...)
+- Hijacking raw elements (~$.hijack(element)~, ~$.init()~ - hijacks
+  ~<body>~)
+
+Hijacked elements contain useful methods:
+- ~.att$(name, [value])~ - toggles/sets an attribute
+- ~.ch$(...children)~ - appends children to the element
+- ~.class$(name, [force])~ - toggles a class
+- ~.click$(handler)~ - adds a click event listener, adds the
+  ~clickable~ attribute
+- ~.css$(prop, value)~ - sets a css property
+- ~.data$(name, value)~ - adds a ~data-{name}~ attribute
+- ~.map$(f)~ - calls ~f(element)~
+- ~.on$(event, handler)~ - adds an event listener
+- ~.wrap$(el)~ - redirects the ~.ch$~ function to ~el~'s ~.ch$~
+  
+All of these return the element so they can be *chained*:
+#+begin_src javascript
+  body.data$('theme','dark').att$('id','body')
+#+end_src
+  
+** Predefined elements
+
+*** Editor
+
+~$.editor()~ is a textarea with smarter tabs and backspaces for
+writing code.  To change the default tab size (2), edit the constant
+~tab_length~
+
+*** Overlay
+
+~$.overlay()~ spans the entire window, has some content and is closed
+by clicking outside the content
+
+*** Dialog
+
+~$.dialog()~ is an overlay with additional controls. These can be
+either predefined: ~$.DONE~, ~$.SAVE~, ~$.CANCEL~, ~$.DELETE~
+or custom: function, which returns an element.
+You can also use the special value ~$.SPACER~ to move the controls.
+
+*** Tabs
+
+~$.tabs(tabs, default_tab=0)~ accepts an object such as
+#+begin_src javascript
+  {
+      'Tab 1': () => content1,
+      'Tab 2': () => content2,
+  }
+#+end_src
+Upon clicking on a tab, its corresponding function is called.
+
+*** Searchbox
+
+~$.searchbox(url)~ is an input which concats the inputted value to the
+url and redirects the page there. Example usage:
+#+begin_src javascript
+  $.searchbox("https://searx.org/search?q=")
+#+end_src

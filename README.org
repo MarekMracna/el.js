@@ -4,7 +4,7 @@
 
 el.js (and el.css) is a convenience library for vanilla javascript
 projects.  el.js makes working with elements simple and provides a few
-predefines custom elements.
+predefined custom elements.
 
 ** Usage
 

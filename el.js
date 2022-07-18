@@ -65,7 +65,7 @@ $.fmap = a => f => (...args) => f(a(...args))
 
 
 
-'main section div span table tr td th spacer a img ul ol li h1 h2 h3 h4 h5 h6 p form input label textarea i rule controls'.split(' ').forEach(tag => $[tag] = $.el(tag))
+'main section div span table tr td th spacer a img ul ol li h1 h2 h3 h4 h5 h6 p form input label textarea i rule controls b strong em kbd'.split(' ').forEach(tag => $[tag] = $.el(tag))
 
 $.nohref = 'javascript:void(0)'
 

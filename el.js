@@ -182,10 +182,30 @@ $.dialog = (controls, ...children) => {
     return overlay
 }
 
-$.searchbox = url => $.fmap($.input)(e=>
-    e.att$('type', 'search')
-    .on$('keyup', ev => ev.keyCode===13 && (window.location.href = url+encodeURI(e.value)))
-)
+$.searchbox = url => {
+    const input = $.input()
+                   .att$('type', 'search')
+    input.setURL$ = url => {
+        input.url = url
+        return input;
+    }
+    input.setURL$(url)
+    input.on$('keyup', e => {
+        if (e.keyCode===13) { // ENTER
+            input.dispatchEvent(new CustomEvent('search',
+                                                {
+                                                    details: {},
+                                                    bubbles: false,
+                                                    cancellable: false,
+                                                    composed: false,
+                                                }))
+        }
+    })
+    input.on$('search', () => {
+        window.location.href = input.url+encodeURI(input.value)
+    })
+    return input
+}
 
 $.editor    = $.fmap($.textarea)(e=>e.on$('keydown', function(e) {
     const tab_length = 2

@@ -184,7 +184,7 @@ $.dialog = (controls, ...children) => {
 
 $.searchbox = url => $.fmap($.input)(e=>
     e.att$('type', 'search')
-    .on$('keyup', ev => ev.keyCode===13 && (window.location.href = url+e.value))
+    .on$('keyup', ev => ev.keyCode===13 && (window.location.href = url+encodeURI(e.value)))
 )
 
 $.editor    = $.fmap($.textarea)(e=>e.on$('keydown', function(e) {

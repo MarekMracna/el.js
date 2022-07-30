@@ -241,12 +241,26 @@ $.editor    = $.fmap($.textarea)(e=>e.on$('keydown', function(e) {
 $.tabs = (ts, default_tab = 0) => {
     let btns = $.el('tablist')()
     let tabs = Object.getOwnPropertyNames(ts)
-    let ret = $.el('tabs')(btns, ts[tabs[default_tab]]())
+
+    const tabIndex = tab => {
+        switch (typeof(tab)) {
+            case 'number':
+                if (tab >= tabs.length)
+                    throw new Error(`el.js: Tab index out of bounds (${tab} > ${tabs.length - 1})`)
+                return tab;
+            case 'string':
+                return tabs.indexOf(tab);
+            default:
+                throw new Error("el.js: Invalid argument for tabs.switchTo$")
+        }
+    }
+
+    let ret = $.el('tabs')(btns, ts[tabs[tabIndex(default_tab)]]())
 
     ret.current_tab = default_tab
     ret.tabs = ts
     ret.update$ = () => btns.children[ret.current_tab].click()
-    ret.switchTo$ = num => btns.children[num].click()
+    ret.switchTo$ = tab => btns.children[tabIndex(tab)].click()
     for (let [i, t] of tabs.entries()) {
         btns.ch$(
             $.button(t)
